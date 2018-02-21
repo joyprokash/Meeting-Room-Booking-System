@@ -1,0 +1,41 @@
+td:hover {
+    /**background-color: #cbc8c5; **/
+}
+.actives{
+    background-color: brown;
+}
+
+.booked{
+    background-color: #1f9c0f;
+    background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+    /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
+}
+
+.ui-autocomplete-multiselect.ui-state-default.ui-widget{
+    width: 350px!important;
+}
+.suggestions{
+	cursor:pointer;
+}
+
+.selected{
+	padding: 2px 5px;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+	background-color: gainsboro;
+	border: 1px solid green;
+}
+ 
+.selected a{
+	cursor:pointer;
+	font-weight:bold;
+}
+
+.autocomplete-suggestion {
+    padding: 2px 5px;
+    font-size: 1.2em;
+    white-space: nowrap;
+    overflow: hidden;
+	background-color: gainsboro;
+}

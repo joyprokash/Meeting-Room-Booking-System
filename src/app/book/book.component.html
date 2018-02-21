@@ -1,0 +1,139 @@
+
+    <div class="row">  
+        <div class="col-md-6">
+            <select class="form-control" (change)="onChange($event.target.value)">
+                <option>SELECT FLOOR</option>
+                <option *ngFor="let floor of floors" value={{floor.id}} >{{floor.name}}</option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <select class="form-control" (change)="onRoomChange($event.target.value)">
+                <option>SELECT ROOMS</option>
+                <option *ngFor="let room of rooms" value={{room.id}} >{{room.room}}</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="row" [hidden]="rooselect === 'false'">
+    <div class="col-md-12"> 
+          
+        <table class="table table-bordered" id="newTable">
+            <tr style="border:0px">
+                <td colspan="3">
+                <i style="font-size:35px;cursor:pointer" (click)="onBtnClick('prev',dates[0].day)" class="fa fa-chevron-circle-left" aria-hidden="true"></i>
+                <i style="font-size:35px;cursor:pointer" (click)="onBtnClick('next',dates[0].day)" class="fa fa-chevron-circle-right" aria-hidden="true"></i>
+              </td>
+              <td colspan="3">
+                    <input type="text" class="form-control pull-right" value="{{displayDate}}"  (focus)="onChangeDate($event.target.value)" id="datepicker" placeholder="MM/DD/YYYY">   
+              </td>
+            </tr>
+            <tr class="text-center"><td>Days</td><td>Sunday</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td><td>Thursday</td></tr>
+            <tr class="text-center"><td><strong>Time</strong></td>
+                <td *ngFor="let date of dates"><strong>{{date.day}}</strong></td>
+            </tr>
+            <tr *ngFor="let time of times"  class="text-center">
+                <td ><strong>{{time.start | number:'1.2-2'}} - {{time.end | number:'1.2-2'}}</strong></td>
+                <td  style="cursor:pointer" *ngFor="let date of dates"  [ngClass]="{'actives':date.day==(displayDate | date: 'yyyy-MM-dd'),'booked':checkStatus(time.start,time.end,date.day) == 'booked'}"   [attr.data-toggle]="checkStatus(time.start,time.end,date.day) == 'booked' ? '' : 'modal'" data-target=".bd-example-modal-lg" data-placement="top" [attr.title]="(checkStatus(time.start,time.end,date.day) == 'booked')?invitedPeople:(time.start | number: '1.2-2')+ '-' +(time.end | number: '1.2-2')+' '+(date.day)" (click)="openModal(time.start,time.end,date.day)">
+                    
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+              <div class="modal-body">
+                    <div *ngIf="SUCCESS" id="alert-success" class="alert alert-success" role="alert">{{SUCCESS}}</div>
+                    <div *ngIf="ERROR" id="alert-danger" class="alert alert-danger" role="alert">{{ERROR}}</div>
+                 
+                <form class="eventInsForm" method="POST" #f="ngForm" (ngSubmit)="onSubmitForm(f)">
+                    <div class="row">
+                            <div class="col-md-3">
+                                <label>START DATE</label>
+                                <input type="text" readonly="true" name="start_date" id="datepicker1" [(ngModel)]="start_date" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                    <label>END DATE</label>
+                                    <input type="text" readonly="true" name="end_date" id="datepicker2" [(ngModel)]="end_date" class="form-control" >
+                            </div>
+                            <div class="col-md-3">
+                                <label>START TIME</label>
+                                <select class="form-control" name="start_time" [(ngModel)]="start_time">
+                                    <option>SELECT TIME</option>
+                                    <option *ngFor="let time of timesForModals" value="{{time.start | number:'1.2-2'}}" >{{time.start | number:'1.2-2'}}</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                    <label>END TIME</label>
+                                    <select class="form-control" name="end_time" [(ngModel)]="end_time">
+                                        <option>SELECT TIME</option>
+                                        <option *ngFor="let time of timesForModals" value="{{time.end | number:'1.2-2'}}" >{{time.end | number:'1.2-2'}}</option>
+                                    </select>
+                                </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>SUBJECT</label>
+                            <input type="text" name="subject" [(ngModel)]="subject" class="form-control" >
+                        </div>
+                        <div class="col-md-3">
+                                <label>FLOOR</label>
+                                <select class="form-control" name="floor" [(ngModel)]="floor" (change)="onChange($event.target.value)">
+                                    <option>SELECT FLOOR</option>
+                                    <option *ngFor="let floor of floors" value={{floor.id}} >{{floor.name}}</option>
+                                </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label>ROOM</label>
+                            <select class="form-control" name="room" [(ngModel)]="room" (change)="onRoomChange($event.target.value)">
+                                    <option>SELECT ROOMS</option>
+                                    <option *ngFor="let room of rooms" value={{room.id}} >{{room.room}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Required Equibment's</label><br>
+                            <label style="padding-right: 5px;margin-left:20px" class="form-check-label" *ngFor="let Equibment of Equibments">
+                            <input type="checkbox"  name="equib" [(ngModel)]="equib[Equibment.name]"  value="{{Equibment.name}}" class="form-check-input" >{{Equibment.name}}</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>ADDITIONAL REQUIREMENTS</label>
+                            <textarea class="form-control" name="re" [(ngModel)]="re"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>INVITES</label>
+                            <input type="text" id="country"  class="form-control" name="invites" [(ngModel)]="invites" (keyup)="filter()">
+                            <div class="suggestions" *ngIf="filteredList.length > 0">
+								<div class="autocomplete-suggestion" data-index="0" *ngFor="let item of filteredList">
+									<a (click)="select(item.value)">{{item.value}}</a>
+								</div>
+                            </div>
+                            <div *ngFor="let item of selected">
+                                <div class="selected" >
+                                    <span>{{item}}</span>
+                                    <a (click)="remove(item)"><span class="pull-right">x</span></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>MESSAGE</label>
+                            <textarea class="form-control" name="message" [(ngModel)]="message"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                    <input type="submit" id="btn" style="cursor:pointer" class="btn btn-primary btn-lg pull-right" value="BOOK" name="book">&nbsp;
+                    <button type="button" style="cursor:pointer" class="btn btn-danger btn-lg pull-left" data-dismiss="modal">CLOSE</button>
+                </form>
+              </div>
+              </div>
+            </div>
+          </div>
+         
