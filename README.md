@@ -4,6 +4,12 @@
 	Username : abc@abc.com
 	Password : 123456
 	
+	For Further Information Regarding This Project Please Mail here 
+	
+	joy.1993@hotmail.com or You can visit Here http://www.joyprokash.me ..
+	
+	Good Luck !
+	
 # Store
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
 
